@@ -1,0 +1,155 @@
+<footer class="main-footer">
+    <div class="footer-left">
+        Copyright &copy; 2019 <div class="bullet"></div>Aldy Tamara</a>
+    </div>
+    <div class="footer-right">
+
+    </div>
+</footer>
+</div>
+</div>
+<script src="/assets/js/jquery-3.5.1.min.js"></script>
+<script src="/assets/js/socket.io.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/assets/js/bootstrap-datetimepicker.id.js"></script>
+
+<script src="/assets/js/moment.min.js"></script>
+<script src="/assets/js/moment-with-locales.min.js"></script>
+<script src="/assets/js/popper.js"></script>
+<script src="/assets/js/jquery.nicescroll.min.js"></script>
+<script src="/assets/js/stisla.js"></script>
+<script src="/assets/js/sweetalert2.all.min.js"></script>
+<!-- JS Libraies -->
+<script src="/assets/js/dropzone.min.js"></script>
+<script src="/assets/js/sticky-kit.js"></script>
+<script src="/assets/js/iziToast.min.js"></script>
+<script src="/assets/js/modules-toastr.js"></script>
+
+<!-- Page Specific JS File -->
+<script src="/assets/js/components-multiple-upload.js"></script>
+
+<!-- JS Libraies -->
+<script src="/assets/js/jquery.pwstrength.min.js"></script>
+<script src="/assets/js/jquery.selectric.min.js"></script>
+<script src="/assets/js/jquery.chocolat.min.js"></script>
+
+<!-- Page Specific JS File -->
+<script src="/assets/js/auth-register.js"></script>
+
+<script src="/assets/js/scripts.js"></script>
+<script src="/assets/js/custom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+<script>
+    moment.locale('id');
+    let waktu = moment('<%= time %>').fromNow()
+    document.getElementById('timelog').innerHTML = 'Login ' + waktu;
+    console.log(waktu)
+    notif()
+
+    function notif() {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/datanotif",
+            success: function (data) {
+                console.log(data)
+                $('#notifcontainer').html('')
+
+                let html = '';
+                data.forEach((notif) => {
+                    if (notif.untuk == 'all') {
+                        if (notif.dari == '<%= username %>') {
+                            notif.dari = 'Anda';
+                        }
+                        if (notif.jenis == 'hapuspemilih' || notif.jenis == 'hapuspanitia' | notif
+                            .jenis == 'hapuscalon') {
+
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-danger text-white">
+                                            <i class="fa fa-user-minus"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        } else if (notif.jenis == 'tambahpemilih' || notif.jenis ==
+                            'tambahpanitia' || notif.jenis ==
+                            'tambahcalon') {
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-primary text-white">
+                                            <i class="fa fa-user-plus"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        } else if (notif.jenis == 'editgrup') {
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-success text-white">
+                                            <i class="fa fa-edit"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        } else if (notif.jenis == 'editcalon') {
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-warning text-white">
+                                            <i class="fa fa-user-edit"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        }
+
+                    } else if (notif.untuk == '<%= username %>') {
+                        if (notif.dari == '<%= username %>') {
+                            notif.dari = 'Anda';
+                        }
+                        if (notif.jenis == 'tambahpemilih') {
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-info text-white">
+                                            <i class="fa fa-user-plus"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        } else if (notif.jenis == 'hapuspemilih') {
+                            html += `<a href="#" class="dropdown-item">
+                                        <div class="dropdown-item-icon bg-secondary text-white">
+                                            <i class="fa fa-user-minus"></i>
+                                        </div>
+                                        <div class="dropdown-item-desc">
+                                            <Dedik>${notif.dari}</b> ${notif.keterangan}
+                                            <div class="time">${moment(notif.created_at).fromNow()}</div>
+                                        </div>
+                                    </a>`;
+                        }
+
+                    }
+                    // html += `<a href="#" class="dropdown-item dropdown-item-unread">
+                    //                     <div class="dropdown-item-icon bg-info text-white">
+                    //                         <i class="fa fa-trash"></i>
+                    //                     </div>
+                    //                     <div class="dropdown-item-desc">
+                    //                         <Dedik>${notif.dari}</b> ${notif.keterangan}
+                    //                         <div class="time">10 Hours Ago</div>
+                    //                     </div>
+                    //                 </a>`;
+                });
+                $('#notifcontainer').html(html)
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

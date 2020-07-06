@@ -1,0 +1,121 @@
+<%- include('layout/header'); -%>
+<style>
+    body {
+        background-image: url('/assets/images/header24.svg');
+        /* Full height */
+        height: 50%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .card {
+        -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        border-radius: 15px;
+    }
+
+
+    .btn-grad {
+        background-image: linear-gradient(to right, #ee0979 0%, #ff6a00 100%);
+        color: white;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    .btn-grad:hover {
+        background-position: right center;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div
+                        class="mantab col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+                        <div id="error" class="col-xl-12"></div>
+                        <center>
+                            <h3 style="color: white;">Project Upwork</h3>
+                        </center>
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <div class="row" style="margin:auto;">
+                                    <center>
+                                        <h4>Login as user</h4>
+                                    </center>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body">
+                                <form action="javascript:void(0);" id="login_form" class="needs-validation"
+                                    novalidate="">
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input id="username" type="text" class="form-control" name="username"
+                                            tabindex="1" required autofocus>
+                                        <div class="invalid-feedback">
+                                            Please fill in your username
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Password</label>
+                                        <input id="password" type="password" class="form-control" name="password"
+                                            tabindex="2" required>
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <div class="invalid-feedback">
+                                            please fill in your password
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <button type="submit" id="login_submit" class="btn btn-grad btn-lg btn-block"
+                                            tabindex="4">
+                                            Login
+                                        </button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="simple-footer">
+                            Copyright &copy; AldyTamara 2020
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+<%- include('layout/footer'); -%>
+<script>
+    $(document).ready(function () {
+        $('#login_submit').click(function () {
+            var data = $('#login_form').serialize();
+            $.ajax({
+                type: "post",
+                url: '/loguser',
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    if (data['msg'] == 'success') {
+                        window.location.href = '/dashboarduser'
+                    } else {
+                        Swal.fire(
+                            'Failed!',
+                            data['msg'],
+                            'error'
+                        )
+                    }
+                },
+                error: function (error) { }
+            });
+        })
+
+    });
+</script>
