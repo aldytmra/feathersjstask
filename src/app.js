@@ -337,6 +337,42 @@ app.post('/addsubcategory', csrfProtection, function (req, res) {
     }
 });
 
+app.post('/addparentcategoryuser', csrfProtection, function (req, res) {
+    if (!req.session.isUser) {
+        res.redirect('/loginuser');
+    } else {
+        let sql2 = "INSERT INTO categories (parent_id,name) VALUES (0,'" + req.body.name + "')";
+        let query2 = conn.query(sql2, async (err, data) => {
+            if (err) {
+                throw err
+            } else {
+                return res.json({
+                    success: true,
+                    msg: 'Category Success Saved!',
+                });
+            }
+        });
+    }
+});
+
+app.post('/addsubcategoryuser', csrfProtection, function (req, res) {
+    if (!req.session.isUser) {
+        res.redirect('/loginuser');
+    } else {
+        let sql2 = "INSERT INTO categories (parent_id,name) VALUES ('" + req.body.idsub + "','" + req.body.name + "')";
+        let query2 = conn.query(sql2, async (err, data) => {
+            if (err) {
+                throw err
+            } else {
+                return res.json({
+                    success: true,
+                    msg: 'Category Success Saved!',
+                });
+            }
+        });
+    }
+});
+
 app.post('/dataeditsubcategory', csrfProtection, function (req, res) {
     if (!req.session.isAdmin) {
         res.redirect('/loginadmin');
